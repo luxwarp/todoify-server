@@ -7,9 +7,17 @@ module.exports = {
         next(err)
       } else {
         if (todoData.length <= 0) {
-          res.status(400).json({ status: 'error', message: 'Could not find a to-do matching id and user.' })
+          res.status(404).json({
+            status: 'info',
+            message: 'Could not find any to-do matching id and user.',
+            clientMessage: 'Could not find any to-do.'
+          })
         } else {
-          res.json({ status: 'success', message: 'Found to-do.', data: todoData })
+          res.json({
+            status: 'success',
+            message: 'Found to-do.',
+            clientMessage: 'Found to-do.',
+            data: todoData })
         }
       }
     })
@@ -20,9 +28,18 @@ module.exports = {
         next(err)
       } else {
         if (todos.length <= 0) {
-          res.status(400).json({ status: 'error', message: 'No to-dos found for this user.' })
+          res.status(404).json({
+            status: 'info',
+            message: 'Could not find any to-dos found for this user.',
+            clientMessage: 'Could not find any to-dos.'
+          })
         } else {
-          res.status(200).json({ status: 'success', message: 'Found to-do.', data: todos })
+          res.status(200).json({
+            status: 'success',
+            message: 'Found to-do.',
+            clientMessage: 'Found to-do.',
+            data: todos
+          })
         }
       }
     })
@@ -33,9 +50,17 @@ module.exports = {
         next(err)
       } else {
         if (!todoData) {
-          res.status(400).json({ status: 'error', message: 'No to-do with this id and user could be deleted.' })
+          res.status(404).json({
+            status: 'info',
+            message: 'No to-do with this id and user could be deleted.',
+            clientMessage: 'Could not find any to-do to delete.'
+          })
         } else {
-          res.status(200).json({ status: 'success', message: 'To-do deleted' })
+          res.status(200).json({
+            status: 'success',
+            message: 'To-do deleted.',
+            clientMessage: 'To-do deleted.'
+          })
         }
       }
     })
@@ -46,9 +71,18 @@ module.exports = {
         next(err)
       } else {
         if (!result) {
-          res.status(500).json({ status: 'error', message: 'Something went wrong creating the to-do.' })
+          res.status(500).json({
+            status: 'error',
+            message: 'Something went wrong creating the to-do.',
+            clientMessage: 'Could not create to-do'
+          })
         } else {
-          res.status(202).json({ status: 'success', message: 'To-do created.', data: result })
+          res.status(201).json({
+            status: 'success',
+            message: 'To-do created.',
+            clientMessage: 'To-do created.',
+            data: result
+          })
         }
       }
     })

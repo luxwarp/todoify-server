@@ -1,12 +1,17 @@
 {
   "name": "todoify-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "private": true,
   "description": "Todoify Server, a simple rest api built with NodeJS, Express, JWT, and Mongoose.",
   "main": "index.js",
   "scripts": {
     "start": "supervisor index.js"
   },
-  "author": "Mikael Luxwarp Carlsson <mikael.m.carlsson@gmail.com> (https://luxwarp.info)",
+  "author": {
+    "name": "Mikael Luxwarp Carlsson",
+    "email": "mikael.m.carlsson@gmail.com",
+    "url": "https://luxwarp.info"
+  },
   "license": "ISC",
   "repository": {
     "type": "git",

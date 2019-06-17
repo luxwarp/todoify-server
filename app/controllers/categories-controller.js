@@ -7,9 +7,18 @@ module.exports = {
         next(err)
       } else {
         if (categoryData.length <= 0) {
-          res.status(400).json({ status: 'error', message: 'Could not find a category matching id and user.' })
+          res.status(404).json({
+            status: 'info',
+            message: 'Could not find a category matching id and user.',
+            clientMessage: 'Could not find any category matching this id.'
+          })
         } else {
-          res.json({ status: 'success', message: 'Found category.', data: categoryData })
+          res.json({
+            status: 'success',
+            message: 'Found category.',
+            clientMessage: 'Found category.',
+            data: categoryData
+          })
         }
       }
     })
@@ -20,9 +29,18 @@ module.exports = {
         next(err)
       } else {
         if (categories.length <= 0) {
-          res.status(400).json({ status: 'error', message: 'No categories found for this user.' })
+          res.status(404).json({
+            status: 'info',
+            message: 'No categories found for this user.',
+            clientMessage: 'No categories found.'
+          })
         } else {
-          res.status(200).json({ status: 'success', message: 'Found categories.', data: categories })
+          res.status(200).json({
+            status: 'success',
+            message: 'Found categories.',
+            clientMessage: 'Found categories',
+            data: categories
+          })
         }
       }
     })
@@ -33,9 +51,17 @@ module.exports = {
         next(err)
       } else {
         if (!categoryData) {
-          res.status(400).json({ status: 'error', message: 'No category with this id and user could be deleted.' })
+          res.status(404).json({
+            status: 'error',
+            message: 'No category with this id and user could be deleted.',
+            clientMessage: 'Could not find category to delete.'
+          })
         } else {
-          res.status(200).json({ status: 'success', message: 'Category deleted' })
+          res.status(200).json({
+            status: 'success',
+            message: 'Category deleted.',
+            clientMessage: 'Category deleted.'
+          })
         }
       }
     })
@@ -46,9 +72,18 @@ module.exports = {
         next(err)
       } else {
         if (!result) {
-          res.status(500).json({ status: 'error', message: 'Something went wrong creating the category.' })
+          res.status(500).json({
+            status: 'error',
+            message: 'Something went wrong creating the category.',
+            clientMessage: 'Could not create category.'
+          })
         } else {
-          res.status(202).json({ status: 'success', message: 'Category created.', data: result })
+          res.status(201).json({
+            status: 'success',
+            message: 'Category created.',
+            clientMessage: 'Category created.',
+            data: result
+          })
         }
       }
     })
