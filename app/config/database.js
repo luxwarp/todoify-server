@@ -1,25 +1,17 @@
 const mongoose = require('mongoose')
 const config = require('./config')
 
-// create url to MongoDB
-const mongoDB = 'mongodb://' +
-                config.DB_USERNAME + ':' +
-                config.DB_PASSWORD + '@' +
-                config.DB_HOST + ':' +
-                config.DB_PORT + '/' +
-                config.DB_DBNAME
-
 // this is true or false if mongoose is connected to MongoDB
 let connected = false
 // Mongoose connecting to MongoDB
-mongoose.connect(mongoDB, { useNewUrlParser: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
 
 // If mongoose is unable to connect to MongoDB or loses connection this will run every x seconds set in .env.
 function retryConnection () {
   if (connected === false) {
     console.log('Failed to connect to database. Trying again in ' + config.DB_RECONNECT_SECONDS + ' seconds')
     setTimeout(() => {
-      mongoose.connect(mongoDB, { useNewUrlParser: true })
+      mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
     }, config.DB_RECONNECT_SECONDS * 1000)
   }
 }

@@ -1,8 +1,8 @@
-const categoriesModel = require('../models/categories-model')
+const Categories = require('../models/Categories.model')
 
 module.exports = {
   getById: (req, res, next) => {
-    categoriesModel.find({ _id: req.params.categoryId, userId: req.body.userId }, (err, categoryData) => {
+    Categories.findOne({ _id: req.params.categoryId, userId: req.body.userId }, (err, categoryData) => {
       if (err) {
         next(err)
       } else {
@@ -10,10 +10,10 @@ module.exports = {
           res.status(404).json({
             status: 'info',
             message: 'Could not find a category matching id and user.',
-            clientMessage: 'Could not find any category matching this id.'
+            clientMessage: 'Could not find category.'
           })
         } else {
-          res.json({
+          res.status(200).json({
             status: 'success',
             message: 'Found category.',
             clientMessage: 'Found category.',
@@ -24,7 +24,7 @@ module.exports = {
     })
   },
   getAll: (req, res, next) => {
-    categoriesModel.find({ userId: req.body.userId }, (err, categories) => {
+    Categories.find({ userId: req.body.userId }, (err, categories) => {
       if (err) {
         next(err)
       } else {
@@ -32,7 +32,7 @@ module.exports = {
           res.status(404).json({
             status: 'info',
             message: 'No categories found for this user.',
-            clientMessage: 'No categories found.'
+            clientMessage: 'Could not find any categories.'
           })
         } else {
           res.status(200).json({
@@ -46,7 +46,7 @@ module.exports = {
     })
   },
   deleteById: (req, res, next) => {
-    categoriesModel.findOneAndDelete({ _id: req.params.categoryId, userId: req.body.userId }, (err, categoryData) => {
+    Categories.findOneAndDelete({ _id: req.params.categoryId, userId: req.body.userId }, (err, categoryData) => {
       if (err) {
         next(err)
       } else {
@@ -57,7 +57,7 @@ module.exports = {
             clientMessage: 'Could not find category to delete.'
           })
         } else {
-          res.status(200).json({
+          res.status(204).json({
             status: 'success',
             message: 'Category deleted.',
             clientMessage: 'Category deleted.'
@@ -67,7 +67,7 @@ module.exports = {
     })
   },
   create: (req, res, next) => {
-    categoriesModel.create({ title: req.body.title, userId: req.body.userId }, (err, result) => {
+    Categories.create({ title: req.body.title, userId: req.body.userId }, (err, result) => {
       if (err) {
         next(err)
       } else {

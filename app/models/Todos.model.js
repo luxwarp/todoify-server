@@ -6,7 +6,7 @@ const todosSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  categoryId: {
+  category: {
     type: mongoose.Schema.Types.ObjectId,
     required: false,
     trim: true,

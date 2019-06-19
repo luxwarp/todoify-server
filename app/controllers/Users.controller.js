@@ -1,10 +1,10 @@
-const userModel = require('../models/users-model')
+const Users = require('../models/Users.model')
 const brypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 module.exports = {
-  getUserInfo: (req, res, next) => {
-    userModel.findById(req.body.userId, 'email name createdAt updatedAt', (err, userInfo) => {
+  getUser: (req, res, next) => {
+    Users.findById(req.body.userId, (err, userInfo) => {
       if (err) {
         next(err)
       } else {
@@ -12,13 +12,13 @@ module.exports = {
           res.status(404).json({
             status: 'info',
             message: 'No user found matching id.',
-            clientMessage: 'User not found.'
+            clientMessage: 'Could not find user.'
           })
         } else {
           res.status(200).json({
             status: 'success',
-            message: 'Found user',
-            clientMessage: 'Found user',
+            message: 'Found user.',
+            clientMessage: 'Found user.',
             data: userInfo
           })
         }
@@ -26,22 +26,22 @@ module.exports = {
     })
   },
   create: (req, res, next) => {
-    userModel.findOne({ email: req.body.email }, (err, existing) => {
+    Users.findOne({ email: req.body.email }, (err, existing) => {
       if (err) {
         next(err)
       } else if (existing) {
-        res.status(400).json({
+        res.status(409).json({
           status: 'error',
           message: 'Email is already registered.',
           clientMessage: 'Email is already registered.'
         })
       } else {
-        userModel.create({
+        Users.create({
           email: req.body.email,
           password: req.body.password,
           name: req.body.name
         },
-        (err, result) => {
+        (err) => {
           if (err) {
             next(err)
           } else {
@@ -56,7 +56,7 @@ module.exports = {
     })
   },
   authenticate: (req, res, next) => {
-    userModel.findOne({ email: req.body.email }, (err, userInfo) => {
+    Users.findOne({ email: req.body.email }, (err, userInfo) => {
       if (err) {
         next(err)
       } else {
@@ -67,7 +67,7 @@ module.exports = {
             clientMessage: 'Wrong email or password.'
           })
         } else {
-          if (brypt.compareSync(req.body.password, userInfo.password)) {
+          if (brypt.compare(req.body.password, userInfo.password)) {
             const token = jwt.sign({ id: userInfo._id }, req.app.get('secretKey'), { expiresIn: '1h' })
             res.status(200).json({
               status: 'success',
