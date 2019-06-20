@@ -26,26 +26,21 @@ app.use((req, res, next) => {
 app.use('/', routes)
 
 // error handle
-app.use((req, res, next) => {
-  res.status(404).json({
-    status: 'error',
-    message: 'Sorry, could not find anything here.',
-    clientMessage: 'Not found'
-  })
-})
+app.use((error, req, res, next) => {
+  // console.log the error if no clientMessage exist, then it's not a custom error.
+  if (!error.clientMessage) {
+    console.log(error)
+  }
 
-app.use((err, req, res, next) => {
-  console.error(err)
-  res.status(500).json({
-    status: 'error',
-    message: err.message,
-    clientMessage: 'Server error'
+  res.status(error.status || 500).json({
+    message: error.message || 'Internal server error',
+    clientMessage: error.clientMessage || 'Server error'
   })
 })
 
 // start express, print out app title, startup message and listen on the port set in .env file
 app.listen(config.PORT, () => {
-  console.log('# ' + config.APP_NAME)
+  console.log(config.APP_NAME)
   console.log(config.STARTUP_MESSAGE)
   console.log(`${config.APP_NAME} is running on port: ${config.PORT}`)
 })
