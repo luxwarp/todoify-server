@@ -1,6 +1,6 @@
 const routes = require('express').Router()
 const Users = require('../controllers/Users.controller')
-const validateUser = require('../helpers/userValidation')
+const validateUser = require('../middlewares/userValidation')
 
 // public routes
 routes.post('/register', Users.create)

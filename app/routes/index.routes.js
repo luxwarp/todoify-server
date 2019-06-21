@@ -2,7 +2,7 @@ const routes = require('express').Router()
 const users = require('./users.routes')
 const categories = require('./categories.routes')
 const todos = require('./todos.routes')
-const validateUser = require('../helpers/userValidation')
+const validateUser = require('../middlewares/userValidation')
 
 routes.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome!', clientMessage: 'Welcome' })

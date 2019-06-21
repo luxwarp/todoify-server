@@ -76,15 +76,15 @@ module.exports = {
               })
             }
 
-            const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: '1h' })
-            res.status(200).json({
-              message: 'Successfully authenticated.',
-              clientMessage: 'Successfully authenticated.',
-              data: {
-                token: token,
-                tokenExpiresIn: '1h'
-              }
-            })
+            const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
+            res
+              .status(200).json({
+                message: 'Successfully authenticated.',
+                clientMessage: 'Successfully authenticated.',
+                data: {
+                  token: token
+                }
+              })
           })
       })
   }

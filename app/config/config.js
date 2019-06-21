@@ -9,6 +9,7 @@ if (envFile.error) {
     PORT: process.env.HOST_PORT || '5050',
     MORGAN: process.env.MORGAN || 'dev',
     SECRET_KEY: process.env.SECRET_KEY || 'Iam-Super_secret-dont-!hack-Me',
+    TOKEN_EXPIRESIN: process.env.TOKEN_EXPIRESIN || '1h',
     MONGODB_URI: process.env.MONGODB_URI || 'mongodb://username:password@localhost:27017/todoify',
     DB_RECONNECT_SECONDS: process.env.DB_RECONNECT_SECONDS || 5
   }

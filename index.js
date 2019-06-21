@@ -11,16 +11,14 @@ const config = require('./app/config/config') // config is the .env variables co
 require('./app/config/database') // the mongoose connection to MongoDB
 const routes = require('./app/routes/index.routes') // the routes for the API.
 
-app.set('secretKey', config.SECRET_KEY) // sets our secret key so we can use it in express if we want to.
+app.set('secretKey', config.SECRET_KEY) // sets our secret key so we can use it in express if we want to, like for JWT sign.
+app.set('tokenExpiresIn', config.TOKEN_EXPIRESIN)
+app.disable('x-powered-by')
 app.use(cors()) // enable cross-origin so anyone can use the api.
 app.use(morgan(config.MORGAN)) // activate morgan logger for logging to console.
 
 // parse incoming requests body
 app.use(express.json())
-app.use((req, res, next) => {
-  res.setHeader('X-Powered-By', config.APP_NAME)
-  next()
-})
 
 // send all request to routes handler.
 app.use('/', routes)

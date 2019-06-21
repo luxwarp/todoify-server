@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
     })
   } else {
     next({
-      status: 400,
+      status: 401,
       message: 'Could not verify token, pass it in header as authorization',
       clientMessage: 'Not authorized'
     })

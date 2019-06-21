@@ -5,12 +5,14 @@ module.exports = {
     Todos.findOne({ _id: req.params.todoId, userId: req.body.userId })
       .populate('category')
       .catch(error => next(error))
-      .orFail(next({
-        status: 404,
-        message: 'Could not find any to-do matching id and user.',
-        clientMessage: 'Could not find to-do.'
-      }))
       .then(result => {
+        if (!result) {
+          return next({
+            status: 404,
+            message: 'Could not find any to-do matching id and user.',
+            clientMessage: 'Could not find to-do.'
+          })
+        }
         res.status(200).json({
           message: 'Found to-do.',
           clientMessage: 'Found to-do.',
@@ -22,12 +24,14 @@ module.exports = {
     Todos.find({ userId: req.body.userId })
       .populate('category')
       .catch(error => next(error))
-      .orFail(next({
-        status: 404,
-        message: `Could not find any to-do's.`,
-        clientMessage: `Could not find to-do's.`
-      }))
       .then(result => {
+        if (result.length <= 0) {
+          return next({
+            status: 404,
+            message: `Could not find any to-do's.`,
+            clientMessage: `Could not find to-do's.`
+          })
+        }
         res.status(200).json({
           message: `Found to-do's.`,
           clientMessage: `Found to-do's.`,
@@ -38,12 +42,14 @@ module.exports = {
   deleteById: (req, res, next) => {
     Todos.findOneAndDelete({ _id: req.params.todoId, userId: req.body.userId })
       .catch(error => next(error))
-      .orFail(next({
-        status: 404,
-        message: 'No to-do with this id and user could be deleted.',
-        clientMessage: 'Could not find any to-do to delete.'
-      }))
       .then(result => {
+        if (!result) {
+          return next({
+            status: 404,
+            message: 'No to-do with this id and user could be deleted.',
+            clientMessage: 'Could not find any to-do to delete.'
+          })
+        }
         res.status(204).json({
           message: 'To-do deleted.',
           clientMessage: 'To-do deleted.'
