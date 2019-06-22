@@ -5,7 +5,8 @@
   "description": "Todoify Server, a simple to-do with categories, REST API built with NodeJS, Express, Mongoose and JWT.",
   "main": "index.js",
   "scripts": {
-    "start": "supervisor index.js"
+    "start": "supervisor index.js",
+    "single-start": "node index.js"
   },
   "author": {
     "name": "Mikael Luxwarp Carlsson",
