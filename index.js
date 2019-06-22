@@ -23,14 +23,14 @@ app.use('/', routes)
 
 // error handle
 app.use((error, req, res, next) => {
-  // console.log the error if no clientMessage exist, then it's not a custom error.
-  if (!error.clientMessage) {
-    console.log(error)
-  }
+  console.log(error)
 
   res.status(error.status || 500).json({
-    message: error.message || 'Internal server error',
-    clientMessage: error.clientMessage || 'Server error'
+    error: {
+      status: error.status || 500,
+      name: error.name || 'Unknown error',
+      message: error.message || 'Internal server error'
+    }
   })
 })
 

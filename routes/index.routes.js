@@ -1,4 +1,5 @@
 const routes = require('express').Router()
+const createError = require('http-errors')
 const users = require('./users.routes')
 const categories = require('./categories.routes')
 const todos = require('./todos.routes')
@@ -14,11 +15,7 @@ routes.use('/todos', validateUser, todos)
 
 // 404 routes if no other route matches request this error will be sent to error handler.
 routes.use((req, res, next) => {
-  next({
-    status: 404,
-    message: `Path: ${req.path} not found`,
-    clientMessage: 'Not found'
-  })
+  next(createError(404, `Path: ${req.path} not found`))
 })
 
 module.exports = routes
