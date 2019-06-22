@@ -1,6 +1,5 @@
 // import modules
 const express = require('express')
-const morgan = require('morgan')
 const cors = require('cors')
 
 // initialize express
@@ -15,7 +14,6 @@ app.set('secretKey', config.SECRET_KEY) // sets our secret key so we can use it 
 app.set('tokenExpiresIn', config.TOKEN_EXPIRESIN)
 app.disable('x-powered-by')
 app.use(cors()) // enable cross-origin so anyone can use the api.
-app.use(morgan(config.MORGAN)) // activate morgan logger for logging to console.
 
 // parse incoming requests body
 app.use(express.json())
