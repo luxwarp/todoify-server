@@ -7,7 +7,7 @@ const app = express()
 
 // import custom project files
 const config = require('./app/config/config') // config is the .env variables converted to easier variables.
-require('./app/config/database') // the mongoose connection to MongoDB
+const mongo = require('./app/database/mongo') // the mongoose connection to MongoDB
 const routes = require('./app/routes/index.routes') // the routes for the API.
 
 app.set('secretKey', config.SECRET_KEY) // sets our secret key so we can use it in express if we want to, like for JWT sign.
@@ -39,4 +39,6 @@ app.listen(config.PORT, () => {
   console.log(config.APP_NAME)
   console.log(config.STARTUP_MESSAGE)
   console.log(`${config.APP_NAME} is running on port: ${config.PORT}`)
+  // Initialize database connection.
+  mongo()
 })
