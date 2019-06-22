@@ -6,9 +6,9 @@ const cors = require('cors')
 const app = express()
 
 // import custom project files
-const config = require('./app/config/config') // config is the .env variables converted to easier variables.
-const mongo = require('./app/database/mongo') // the mongoose connection to MongoDB
-const routes = require('./app/routes/index.routes') // the routes for the API.
+const config = require('./config/config') // config is the .env variables converted to easier variables.
+const mongo = require('./database/mongo') // the mongoose connection to MongoDB
+const routes = require('./routes/index.routes') // the routes for the API.
 
 app.set('secretKey', config.SECRET_KEY) // sets our secret key so we can use it in express if we want to, like for JWT sign.
 app.set('tokenExpiresIn', config.TOKEN_EXPIRESIN)
