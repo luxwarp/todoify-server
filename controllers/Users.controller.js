@@ -1,91 +1,59 @@
 const Users = require('../models/Users.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
 
 module.exports = {
-  getUser: (req, res, next) => {
-    Users.findById(req.body.userId)
-      .catch(error => next(error))
-      .then(user => {
-        if (!user) {
-          return next({
-            status: '404',
-            message: 'No user found matching id.',
-            clientMessage: 'Could not find user.'
-          })
-        }
+  getUser: async (req, res, next) => {
+    try {
+      const user = await Users.findById(req.body.userId)
+      if (!user) throw createError(404, 'User not found.')
 
-        res.status(200).json({
-          message: 'Found user.',
-          clientMessage: 'Found user.',
-          data: user
-        })
+      res.status(200).json({
+        message: 'Found user.',
+        data: user
       })
+    } catch (error) {
+      return next(error)
+    }
   },
-  create: (req, res, next) => {
-    Users.findOne({ email: req.body.email })
-      .catch(error => next(error))
-      .then(exists => {
-        if (exists) {
-          return next({
-            status: 409,
-            message: 'Email is already registered.',
-            clientMessage: 'Email is already registered.'
-          })
-        }
+  create: async (req, res, next) => {
+    try {
+      const emailExist = await Users.findOne({ email: req.body.email }, 'email')
+      if (emailExist) throw createError(409, 'Email is already registered.')
 
-        Users.create({
-          email: req.body.email,
-          password: req.body.password,
-          name: req.body.name
-        })
-          .catch(error => next({
-            status: 400,
-            message: error.message,
-            clientMessage: error.message
-          }))
-          .then(result => {
-            res.status(201).json({
-              message: 'User account is created.',
-              clientMessage: 'User account is created.',
-              data: result
-            })
-          })
+      const user = new Users({
+        email: req.body.email,
+        password: req.body.password,
+        name: req.body.name
       })
+
+      await user.save()
+
+      res.status(201).json({
+        message: 'User account is created.'
+      })
+    } catch (error) {
+      return next(error)
+    }
   },
-  authenticate: (req, res, next) => {
-    Users.findOne({ email: req.body.email }, '+password')
-      .catch(error => next(error))
-      .then(user => {
-        if (!user) {
-          return next({
-            status: '400',
-            message: 'Could not authenticate. Check email or password.',
-            clientMessage: 'Wrong email or password.'
-          })
+  authenticate: async (req, res, next) => {
+    try {
+      const user = await Users.findOne({ email: req.body.email }, '+password')
+      if (!user) throw createError(400, 'Wrong email or password.')
+
+      const match = await bcrypt.compare(req.body.password, user.password)
+      if (!match) throw createError(400, 'Wrong email or password.')
+
+      const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
+      res.status(200).json({
+        message: 'Successfully authenticated.',
+        data: {
+          token: token
         }
-
-        bcrypt.compare(req.body.password, user.password)
-          .catch(error => next(error))
-          .then(valid => {
-            if (!valid) {
-              return next({
-                status: 400,
-                message: 'Could not authenticate. Check email or password.',
-                clientMessage: 'Wrong email or password.'
-              })
-            }
-
-            const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
-            res
-              .status(200).json({
-                message: 'Successfully authenticated.',
-                clientMessage: 'Successfully authenticated.',
-                data: {
-                  token: token
-                }
-              })
-          })
       })
+    } catch (error) {
+      return next(error)
+    }
   }
 }
