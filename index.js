@@ -1,5 +1,6 @@
 // import modules
 const express = require('express')
+const bodyParser = require('body-parser')
 const cors = require('cors')
 
 // initialize express
@@ -16,7 +17,7 @@ app.disable('x-powered-by')
 app.use(cors()) // enable cross-origin so anyone can use the api.
 
 // parse incoming requests body
-app.use(express.json())
+app.use(bodyParser.json())
 
 // send all request to routes handler.
 app.use('/', routes)
