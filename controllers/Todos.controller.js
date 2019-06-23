@@ -1,78 +1,61 @@
 const Todos = require('../models/Todos.model')
+const createError = require('http-errors')
 
 module.exports = {
-  getById: (req, res, next) => {
-    Todos.findOne({ _id: req.params.todoId, userId: req.body.userId })
-      .populate('category')
-      .catch(error => next(error))
-      .then(result => {
-        if (!result) {
-          return next({
-            status: 404,
-            message: 'Could not find any to-do matching id and user.',
-            clientMessage: 'Could not find to-do.'
-          })
-        }
-        res.status(200).json({
-          message: 'Found to-do.',
-          clientMessage: 'Found to-do.',
-          data: result
-        })
+  getById: async (req, res, next) => {
+    try {
+      const todo = await Todos.findOne({ _id: req.params.todoId, userId: req.body.userId }).populate('category')
+      if (!todo) throw createError(404, 'Could not find to-do.')
+
+      res.status(200).json({
+        message: 'Found to-do.',
+        clientMessage: 'Found to-do.',
+        data: todo
       })
+    } catch (error) {
+      return next(error)
+    }
   },
-  getAll: (req, res, next) => {
-    Todos.find({ userId: req.body.userId })
-      .populate('category')
-      .catch(error => next(error))
-      .then(result => {
-        if (result.length <= 0) {
-          return next({
-            status: 404,
-            message: `Could not find any to-do's.`,
-            clientMessage: `Could not find to-do's.`
-          })
-        }
-        res.status(200).json({
-          message: `Found to-do's.`,
-          clientMessage: `Found to-do's.`,
-          data: result
-        })
+  getAll: async (req, res, next) => {
+    try {
+      const todos = await Todos.find({ userId: req.body.userId }).populate('category')
+      if (todos.length <= 0) throw createError(404, `Could not find any to-do's.`)
+
+      res.status(200).json({
+        message: `Found to-do's.`,
+        data: todos
       })
+    } catch (error) {
+      return next(error)
+    }
   },
-  deleteById: (req, res, next) => {
-    Todos.findOneAndDelete({ _id: req.params.todoId, userId: req.body.userId })
-      .catch(error => next(error))
-      .then(result => {
-        if (!result) {
-          return next({
-            status: 404,
-            message: 'No to-do with this id and user could be deleted.',
-            clientMessage: 'Could not find any to-do to delete.'
-          })
-        }
-        res.status(204).json({
-          message: 'To-do deleted.',
-          clientMessage: 'To-do deleted.'
-        })
+  deleteById: async (req, res, next) => {
+    try {
+      const deleted = await Todos.findOneAndDelete({ _id: req.params.todoId, userId: req.body.userId })
+      if (!deleted) throw createError(404, 'No to-do found to delete.')
+
+      res.status(204).json({
+        message: 'To-do deleted.'
       })
+    } catch (error) {
+      return next(error)
+    }
   },
-  create: (req, res, next) => {
-    Todos.create({
-      title: req.body.title,
-      userId: req.body.userId,
-      category: req.body.category
-    })
-      .catch(error => next({
-        status: 400,
-        message: error.message,
-        clientMessage: error.message
-      }))
-      .then(result => {
-        res.status(201).json({
-          message: 'To-do created.',
-          clientMessage: 'To-do created.',
-          data: result
-        })
+  create: async (req, res, next) => {
+    try {
+      const todo = new Todos({
+        title: req.body.title,
+        userId: req.body.userId,
+        category: req.body.category
       })
+
+      const newTodo = await todo.save()
+      res.status(201).json({
+        message: 'To-do created.',
+        data: newTodo
+      })
+    } catch (error) {
+      return next(error)
+    }
   }
 }
