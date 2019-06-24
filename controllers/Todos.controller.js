@@ -9,7 +9,6 @@ module.exports = {
 
       res.status(200).json({
         message: 'Found to-do.',
-        clientMessage: 'Found to-do.',
         data: todo
       })
     } catch (error) {
