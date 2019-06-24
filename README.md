@@ -14,6 +14,7 @@ Stay tuned for updates in a near future! :D
   * Registration
   * Authentication (login)
   * Get user info
+  * Delete user
 * Categories
   * Create new
   * Get all

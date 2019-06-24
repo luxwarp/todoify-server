@@ -8,5 +8,6 @@ routes.post('/authenticate', Users.authenticate)
 
 // protected routes
 routes.get('/', validateUser, Users.getUser)
+routes.delete('/', validateUser, Users.delete)
 
 module.exports = routes
