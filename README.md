@@ -5,7 +5,7 @@
 ## Intro
 
 Todoify Server, a simple to-do with categories, REST API built with NodeJS, [Express](https://github.com/expressjs/express/), [JWT](https://github.com/auth0/node-jsonwebtoken), and [Mongoose](https://github.com/Automattic/mongoose).
-Authenticated users can only get and manipulate categories and to-do's that matches the user id.
+Authenticated users can only get and manipulate categories and to-do's that matches the authenticated user.
 
 Stay tuned for updates in a near future! :D
 
