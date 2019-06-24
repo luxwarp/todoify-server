@@ -12,20 +12,18 @@ const setHeaders = require('./middlewares/setHeaders')
 const mongo = require('./database/mongo') // the mongoose connection to MongoDB
 const routes = require('./routes/index.routes') // the routes for the API.
 
-app.set('secretKey', config.SECRET_KEY) // sets our secret key so we can use it in express if we want to, like for JWT sign.
+// sets some variables to use app wide.
+app.set('secretKey', config.SECRET_KEY)
 app.set('tokenExpiresIn', config.TOKEN_EXPIRESIN)
+
+// disable the x-powered-by header.
 app.disable('x-powered-by')
 
 // middlewares
 // sets our custom response headers globally
 app.use(setHeaders(config))
 // enable cross-origin so anyone can use the api.
-app.use(cors({
-  origin: true,
-  allowedHeader: 'Content-Type,Authorization',
-  methods: 'GET,POST,PUT, DELETE',
-  exposedHeaders: 'Server, Accept'
-}))
+app.use(cors())
 
 // parse incoming requests body
 app.use(bodyParser.json())
