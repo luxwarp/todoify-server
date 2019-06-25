@@ -34,6 +34,28 @@ module.exports = {
       return next(error)
     }
   },
+  update: async (req, res, next) => {
+    try {
+      const user = await Users.findById(req.body.userId, '+password')
+      if (!user) throw createError(404, 'Could not find user to update.')
+      user.set(req.body)
+
+      if (user.isModified('email')) {
+        const emailExist = await Users.findOne({ email: req.body.email }, 'email _id')
+        if (emailExist && emailExist._id !== req.body.userId) throw createError(409, 'Email is already registered.')
+      }
+
+      let newUserInfo = await user.save()
+      newUserInfo.password = undefined
+
+      res.status(200).json({
+        message: 'User updated.',
+        data: newUserInfo
+      })
+    } catch (error) {
+      return next(error)
+    }
+  },
   authenticate: async (req, res, next) => {
     try {
       const user = await Users.findOne({ email: req.body.email }, '+password')
