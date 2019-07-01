@@ -18,7 +18,7 @@ module.exports = {
   getAll: async (req, res, next) => {
     try {
       const todos = await Todos.find({ userId: req.body.userId }).populate('category')
-      if (todos.length <= 0) throw createError(404, `Could not find any to-do's.`)
+      if (!todos.length) throw createError(404, `Could not find any to-do's.`)
 
       res.status(200).json({
         message: `Found to-do's.`,
