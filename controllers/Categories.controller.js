@@ -18,10 +18,9 @@ module.exports = {
   getAll: async (req, res, next) => {
     try {
       const categories = await Categories.find({ userId: req.body.userId })
-      if (!categories.length) throw createError(404, 'Could not find any categories.')
 
       res.status(200).json({
-        message: 'Found categories.',
+        message: 'Found following categories',
         data: categories
       })
     } catch (error) {
