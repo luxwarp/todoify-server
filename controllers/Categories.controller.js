@@ -1,4 +1,5 @@
 const Categories = require('../models/Categories.model')
+const Todos = require('../models/Todos.model')
 const createError = require('http-errors')
 
 module.exports = {
@@ -31,6 +32,7 @@ module.exports = {
     try {
       const category = await Categories.findOneAndDelete({ _id: req.params.categoryId, userId: req.body.userId })
       if (!category) throw createError(404, 'Could not find category to delete.')
+      await Todos.updateMany({ category: req.params.categoryId, userId: req.body.userId }, { category: null })
 
       res.status(204).json({
         message: 'Category deleted.'
