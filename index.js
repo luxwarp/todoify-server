@@ -2,6 +2,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const morgan = require('morgan')
 
 // initialize express
 const app = express()
@@ -23,6 +24,7 @@ app.disable('x-powered-by')
 // sets our custom response headers globally
 app.use(setHeaders(config))
 // enable cross-origin so anyone can use the api.
+app.use(morgan('dev'))
 app.use(cors())
 
 // parse incoming requests body
