@@ -17,7 +17,9 @@ module.exports = {
   },
   getAll: async (req, res, next) => {
     try {
-      const todos = await Todos.find({ userId: req.body.userId }).populate('category')
+      const todos = await Todos.find({ userId: req.body.userId })
+        .populate(req.query.populate || '')
+        .sort(req.query.sort || '-createdAt')
 
       res.status(200).json({
         message: `Found following to-do's.`,

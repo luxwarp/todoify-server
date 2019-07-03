@@ -18,6 +18,7 @@ module.exports = {
   getAll: async (req, res, next) => {
     try {
       const categories = await Categories.find({ userId: req.body.userId })
+        .sort(req.query.sort || 'title')
 
       res.status(200).json({
         message: 'Found following categories',
