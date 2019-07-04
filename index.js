@@ -24,7 +24,7 @@ app.disable('x-powered-by')
 // sets our custom response headers globally
 app.use(setHeaders(config))
 // enable cross-origin so anyone can use the api.
-app.use(morgan('dev'))
+app.use(morgan(config.MORGAN_LEVEL))
 app.use(cors())
 
 // parse incoming requests body
@@ -51,6 +51,7 @@ app.listen(config.PORT, () => {
   console.log(config.APP_NAME)
   console.log(config.STARTUP_MESSAGE)
   console.log(`${config.APP_NAME} is running on port: ${config.PORT}`)
+  console.log(`Running in ${process.env.NODE_ENV} mode.`)
   // Initialize database connection.
   mongo()
 })

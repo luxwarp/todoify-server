@@ -32,6 +32,13 @@ Check [wiki](https://github.com/luxwarp/todoify-server/wiki) for change log and 
 
 * [NodeJS](https://nodejs.org/en/)
 * [MongoDB](https://www.mongodb.com/)
+* [PM2](http://pm2.keymetrics.io/)
+
+**Make sure you have PM2 installed globally**
+
+```
+npm install pm2 -g
+```
 
 ## Install
 
@@ -57,20 +64,43 @@ save .env file and then install dependencies
 
 ```
 npm install
-``` 
-
-Then run index.js with
-
-```
-npm start
 ```
 
-You should now see in your console that Server is running. Todoify server runs with help of [Supervisor](https://github.com/petruisfan/node-supervisor) so if the server crashes while running it restarts automatically.
+**Make sure you have PM2 installed globally**
+
+```
+npm install pm2 -g
+```
+
+To start Todoify server in development mode
+
+```
+npm run dev
+```
+
+To start Todoify server in production mode
+
+```
+npm run production
+```
+
+You should now see in your console that Todoify server is running. Todoify server runs with help of [PM2](http://pm2.keymetrics.io/)so if the server crashes while running it restarts automatically, both in development and production mode.
+
+If you don't want to start Todoify server with PM2 you can run
+
+```
+npm run single-start
+```
+
+or just 
+
+```
+node ./index.js
+```
 
 If Todoify server loses connection to your MongoDB server it will try to reconnect every 5 second until you kill the Todoify server manually or it gets connected again.
 
 By default Todoify server does not use HTTPS, the easiest way to get your connection encrypted is by using a web server like Nginx or Apache and proxy your traffic from your domain via SSL and down to Todoify server that runs on it's own port.
-
 
 ## License
 
