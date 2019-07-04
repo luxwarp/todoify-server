@@ -84,7 +84,7 @@ To start Todoify server in production mode
 npm run production
 ```
 
-You should now see in your console that Todoify server is running. Todoify server runs with help of [PM2](http://pm2.keymetrics.io/)so if the server crashes while running it restarts automatically, both in development and production mode.
+You should now see in your console that Todoify server is running. Todoify server runs with help of [PM2](http://pm2.keymetrics.io/) so if the server crashes while running it restarts automatically, both in development and production mode.
 
 If you don't want to start Todoify server with PM2 you can run
 
