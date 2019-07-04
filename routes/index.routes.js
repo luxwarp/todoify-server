@@ -6,7 +6,9 @@ const todos = require('./todos.routes')
 const validateUser = require('../middlewares/userValidation')
 
 routes.get('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome!' })
+  res.status(200).json({
+    message: 'Welcome! Api is online.'
+  })
 })
 
 routes.use('/users', users)
