@@ -69,7 +69,7 @@ module.exports = {
         message: 'Successfully authenticated.',
         data: {
           token: token,
-          expiresIn: req.app.get('tokenExpiresIn')
+          type: 'JWT Token'
         }
       })
     } catch (error) {
