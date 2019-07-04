@@ -68,7 +68,8 @@ module.exports = {
       res.status(200).json({
         message: 'Successfully authenticated.',
         data: {
-          token: token
+          token: token,
+          expiresIn: req.app.get('tokenExpiresIn')
         }
       })
     } catch (error) {

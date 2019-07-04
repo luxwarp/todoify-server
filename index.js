@@ -9,7 +9,6 @@ const app = express()
 
 // import custom project files
 const config = require('./config/config') // config is the .env variables converted to easier variables.
-const setHeaders = require('./middlewares/setHeaders')
 const mongo = require('./database/mongo') // the mongoose connection to MongoDB
 const routes = require('./routes/index.routes') // the routes for the API.
 
@@ -21,12 +20,10 @@ app.set('tokenExpiresIn', config.TOKEN_EXPIRESIN)
 app.disable('x-powered-by')
 
 // middlewares
-// sets our custom response headers globally
-app.use(setHeaders(config))
-// enable cross-origin so anyone can use the api.
+// enable morgan request logger.
 app.use(morgan(config.MORGAN_LEVEL))
+// enable cross-origin so anyone can use the api.
 app.use(cors())
-
 // parse incoming requests body
 app.use(bodyParser.json())
 
