@@ -4,7 +4,7 @@ const createError = require('http-errors')
 module.exports = {
   getById: async (req, res, next) => {
     try {
-      const todo = await Todos.findOne({ _id: req.params.todoId, userId: req.body.userId }).populate('category')
+      const todo = await Todos.findOne({ _id: req.params.todoId, userId: req.body.userId }).populate(req.query.populate || '')
       if (!todo) throw createError(404, 'Could not find to-do.')
 
       res.status(200).json({
