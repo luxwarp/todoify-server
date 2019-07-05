@@ -32,7 +32,6 @@ app.use('/', routes)
 
 // error handle
 app.use((error, req, res, next) => {
-  console.log(error)
 
   res.status(error.status || 500).json({
     errors: {
@@ -41,6 +40,9 @@ app.use((error, req, res, next) => {
       message: error.message || 'Internal server error'
     }
   })
+  if (!req) {
+    console.error(error.message)
+  }
 })
 
 // start express, print out app title, startup message and listen on the port set in .env file
