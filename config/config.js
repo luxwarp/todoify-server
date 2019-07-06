@@ -7,6 +7,7 @@ if (envFile.error) {
     APP_NAME: process.env.APP_TITLE || 'Todoify Server',
     PROCESS_NAME: process.env.PROCESS_NAME || 'todoify-server',
     STARTUP_MESSAGE: process.env.STARTUP_MESSAGE || 'Starting Todoify Server...',
+    API_DOCUMENTATION_LINK: process.env.API_DOCUMENTATION_LINK || 'https://documenter.getpostman.com/view/1602420/S1Zz6UxQ?version=latest',
     PORT: process.env.HOST_PORT || '5050',
     SECRET_KEY: process.env.SECRET_KEY || 'Iam-Super_secret-dont-!hack-Me',
     TOKEN_EXPIRESIN: process.env.TOKEN_EXPIRESIN || '1h',

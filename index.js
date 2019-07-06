@@ -15,6 +15,7 @@ const routes = require('./routes/index.routes') // the routes for the API.
 // sets some variables to use app wide.
 app.set('secretKey', config.SECRET_KEY)
 app.set('tokenExpiresIn', config.TOKEN_EXPIRESIN)
+app.set('apiDocumentationLink', config.API_DOCUMENTATION_LINK)
 
 // disable the x-powered-by header.
 app.disable('x-powered-by')

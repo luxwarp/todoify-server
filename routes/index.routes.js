@@ -7,7 +7,8 @@ const validateUser = require('../middlewares/userValidation')
 
 routes.get('/', (req, res) => {
   res.status(200).json({
-    message: 'Welcome! Api is online.'
+    message: 'Welcome! Api is online.',
+    documentation: req.app.get('apiDocumentationLink')
   })
 })
 
