@@ -28,6 +28,23 @@ module.exports = {
       return next(error)
     }
   },
+  updateById: async (req, res, next) => {
+    try {
+      const category = await Categories.findOne({ _id: req.params.categoryId, userId: req.body.userId })
+      if (!category) throw createError(404, 'Could not find category to update.')
+
+      category.title = req.body.title ? req.body.title : category.title
+
+      let newCategory = await category.save()
+
+      res.status(200).json({
+        message: 'Category updated.',
+        data: newCategory
+      })
+    } catch (error) {
+      return next(error)
+    }
+  },
   deleteById: async (req, res, next) => {
     try {
       const category = await Categories.findOneAndDelete({ _id: req.params.categoryId, userId: req.body.userId })

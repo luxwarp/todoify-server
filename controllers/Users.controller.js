@@ -38,7 +38,14 @@ module.exports = {
     try {
       const user = await Users.findById(req.body.userId, '+password')
       if (!user) throw createError(404, 'Could not find user to update.')
-      user.set(req.body)
+
+      // Check password first.
+      const match = await bcrypt.compare(req.body.password, user.password)
+      if (!match) throw createError(403, 'Wrong user password.')
+
+      user.name = req.body.name ? req.body.name : user.name
+      user.email = req.body.email ? req.body.email : user.email
+      user.password = req.body.newPassword ? req.body.newPassword : user.password
 
       if (user.isModified('email')) {
         const emailExist = await Users.findOne({ email: req.body.email }, 'email _id')

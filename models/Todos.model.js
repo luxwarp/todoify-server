@@ -6,6 +6,11 @@ const todosSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  done: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     required: false,

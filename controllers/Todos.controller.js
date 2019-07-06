@@ -29,6 +29,26 @@ module.exports = {
       return next(error)
     }
   },
+  updateById: async (req, res, next) => {
+    try {
+      const todo = await Todos.findOne({ _id: req.params.todoId, userId: req.body.userId })
+      if (!todo) throw createError(404, 'Could not find to-do to update.')
+
+      todo.title = req.body.title ? req.body.title : todo.title
+      todo.done = req.body.done ? req.body.done : todo.done
+      todo.category = req.body.category ? req.body.category : todo.category
+
+      let newTodo = await todo.save()
+      await newTodo.populate(req.query.populate || '').execPopulate()
+
+      res.status(200).json({
+        message: 'To-do updated.',
+        data: newTodo
+      })
+    } catch (error) {
+      return next(error)
+    }
+  },
   deleteById: async (req, res, next) => {
     try {
       const deleted = await Todos.findOneAndDelete({ _id: req.params.todoId, userId: req.body.userId })
