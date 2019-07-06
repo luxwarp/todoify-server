@@ -23,11 +23,13 @@ Stay tuned for updates in a near future! :D
   * Create new
   * Get all
   * Get one by id
+  * Update by id
   * Delete by id
 * To-do's
   * Create new
   * Get all
   * Get one by id
+  * Update by id
   * Delete by id
 
 Check [wiki](https://github.com/luxwarp/todoify-server/wiki) for change log and more information.
