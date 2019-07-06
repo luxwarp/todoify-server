@@ -8,8 +8,12 @@ const createError = require('http-errors')
 module.exports = {
   delete: async (req, res, next) => {
     try {
-      const user = await Users.findByIdAndDelete(req.body.userId)
+      const user = await Users.findOne({ _id: req.body.userId }, '+password')
       if (!user) throw createError(404, 'Could not find user to delete.')
+
+      // Check password first.
+      const match = await bcrypt.compare(req.body.password, user.password)
+      if (!match) throw createError(403, 'Wrong user password.')
 
       await Categories.deleteMany({ userId: req.body.userId })
       await Todos.deleteMany({ userId: req.body.userId })
