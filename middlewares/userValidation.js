@@ -11,10 +11,8 @@ module.exports = async (req, res, next) => {
       // Remove Bearer from string
       token = token.slice(7, token.length)
     }
-    
     const decoded = await jwt.verify(token, req.app.get('secretKey'), (error, decoded) => {
       if (error) throw createError(401, 'Could not verify token, pass it in header as authorization')
-
       return decoded
     })
     req.body.userId = decoded.id

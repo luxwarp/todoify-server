@@ -1,11 +1,50 @@
 const Users = require('../models/Users.model')
 const Categories = require('../models/Categories.model')
 const Todos = require('../models/Todos.model')
+const RefreshTokens = require('../models/RefreshToken.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const createError = require('http-errors')
 
 module.exports = {
+  logout: async (req, res, next) => {
+    try {
+      await RefreshTokens.deleteMany({ userId: req.body.userId })
+
+      res.status(200).json({
+        message: 'All refresh tokens disabled.'
+      })
+    } catch (error) {
+      next(error)
+    }
+  },
+  refreshToken: async (req, res, next) => {
+    try {
+      const refreshToken = await RefreshTokens.findOne({ token: req.body.refreshToken })
+      if (!refreshToken) throw createError(401, 'Invalid refresh token.')
+
+      const decoded = await jwt.verify(refreshToken.token, req.app.get('secretKey'), (error, decoded) => {
+        if (error) throw createError(401, 'Could not verify refresh token. Please authenticate to generate new access and refresh token.')
+        return decoded
+      })
+
+      const token = jwt.sign({ id: decoded.id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
+      const newRefreshToken = jwt.sign({ id: decoded.id }, req.app.get('secretKey'), { expiresIn: '7d' })
+
+      refreshToken.token = newRefreshToken
+      await refreshToken.save()
+
+      res.status(200).json({
+        message: 'Successfully generated new access and refresh token',
+        data: {
+          accessToken: token,
+          refreshToken: refreshToken.token
+        }
+      })
+    } catch (error) {
+      return next(error)
+    }
+  },
   delete: async (req, res, next) => {
     try {
       const user = await Users.findOne({ _id: req.body.userId }, '+password')
@@ -17,6 +56,7 @@ module.exports = {
 
       await Categories.deleteMany({ userId: req.body.userId })
       await Todos.deleteMany({ userId: req.body.userId })
+      await RefreshTokens.deleteMany({ userId: req.body.userId })
 
       res.status(204).json({
         message: 'User and related data has been deleted.'
@@ -76,11 +116,23 @@ module.exports = {
       if (!match) throw createError(400, 'Wrong email or password.')
 
       const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
+      let refreshToken = null
+      if (req.body.refreshToken) {
+        refreshToken = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: '7d' })
+
+        const newRefreshToken = new RefreshTokens({
+          token: refreshToken,
+          userId: user._id
+        })
+
+        await newRefreshToken.save()
+      }
+
       res.status(200).json({
         message: 'Successfully authenticated.',
         data: {
-          token: token,
-          type: 'JWT Token'
+          accessToken: token,
+          refreshToken: refreshToken
         }
       })
     } catch (error) {

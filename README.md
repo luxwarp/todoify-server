@@ -19,6 +19,8 @@ Stay tuned for updates in a near future! :D
   * Get user info
   * Update user
   * Delete user
+  * Logout (disable all refresh tokens.)
+  * Refresh Token
 * Categories
   * Create new
   * Get all

@@ -5,10 +5,12 @@ const validateUser = require('../middlewares/userValidation')
 // public routes
 routes.post('/register', Users.create)
 routes.post('/authenticate', Users.authenticate)
+routes.post('/refreshToken', Users.refreshToken)
 
 // protected routes
 routes.get('/', validateUser, Users.getUser)
-routes.delete('/', validateUser, Users.delete)
 routes.patch('/', validateUser, Users.update)
+routes.delete('/', validateUser, Users.delete)
+routes.post('/logout', validateUser, Users.logout)
 
 module.exports = routes

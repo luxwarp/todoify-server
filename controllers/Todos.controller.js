@@ -70,6 +70,8 @@ module.exports = {
       })
 
       const newTodo = await todo.save()
+      await newTodo.populate(req.query.populate || '').execPopulate()
+
       res.status(201).json({
         message: 'To-do created.',
         data: newTodo
