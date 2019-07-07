@@ -54,6 +54,7 @@ module.exports = {
       const match = await bcrypt.compare(req.body.password, user.password)
       if (!match) throw createError(403, 'Wrong user password.')
 
+      await user.remove()
       await Categories.deleteMany({ userId: req.body.userId })
       await Todos.deleteMany({ userId: req.body.userId })
       await RefreshTokens.deleteMany({ userId: req.body.userId })
