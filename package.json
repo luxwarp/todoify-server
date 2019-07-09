@@ -1,6 +1,6 @@
 {
   "name": "todoify-server",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "description": "Todoify Server, a simple to-do with categories, REST API built with NodeJS, Express, Mongoose and JWT.",
   "main": "index.js",

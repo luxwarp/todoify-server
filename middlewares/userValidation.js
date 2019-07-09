@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const createError = require('http-errors')
+const Users = require('../models/Users.model')
 
 module.exports = async (req, res, next) => {
   try {
@@ -16,7 +17,12 @@ module.exports = async (req, res, next) => {
       return decoded
     })
     req.body.userId = decoded.id
-    next()
+    const user = await Users.findById(req.body.userId, '+authenticated')
+    if (user.authenticated) {
+      return next()
+    } else {
+      throw createError(401, 'Not authorized.')
+    }
   } catch (error) {
     return next(error)
   }

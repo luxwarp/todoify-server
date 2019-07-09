@@ -18,6 +18,11 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     required: false,
     default: null
+  },
+  authenticated: {
+    type: Boolean,
+    default: false,
+    select: false
   }
 },
 {

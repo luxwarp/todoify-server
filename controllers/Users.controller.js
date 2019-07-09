@@ -9,13 +9,37 @@ const createError = require('http-errors')
 module.exports = {
   logout: async (req, res, next) => {
     try {
-      await RefreshTokens.deleteMany({ userId: req.body.userId })
+      const refreshTokens = await RefreshTokens.find({ userId: req.body.userId })
+      if (!refreshTokens.length) throw createError(401, 'No refresh tokens found.')
 
-      res.status(200).json({
-        message: 'All refresh tokens disabled.'
-      })
+      if (refreshTokens.length === 1) {
+        await refreshTokens[0].delete()
+        const user = await Users.findOne({ _id: req.body.userId }, '+authenticated')
+        user.authenticated = false
+        await user.save()
+        res.status(200).json({
+          message: 'Refresh token disabled.'
+        })
+      } else {
+        if (req.body.refreshToken) {
+          const refreshToken = refreshTokens.find(refreshToken => refreshToken.token === req.body.refreshToken)
+          if (!refreshToken) throw createError(401, 'Invalid refresh token.')
+          await refreshToken.delete()
+          res.status(200).json({
+            message: 'Refresh token disabled.'
+          })
+        } else {
+          await refreshTokens.forEach(refreshToken => refreshToken.delete())
+          const user = await Users.findOne({ _id: req.body.userId }, '+authenticated')
+          user.authenticated = false
+          await user.save()
+          res.status(200).json({
+            message: 'Refresh tokens disabled. User needs to authenticate go gain access again.'
+          })
+        }
+      }
     } catch (error) {
-      next(error)
+      return next(error)
     }
   },
   refreshToken: async (req, res, next) => {
@@ -28,17 +52,12 @@ module.exports = {
         return decoded
       })
 
-      const token = jwt.sign({ id: decoded.id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
-      const newRefreshToken = jwt.sign({ id: decoded.id }, req.app.get('secretKey'), { expiresIn: '7d' })
-
-      refreshToken.token = newRefreshToken
-      await refreshToken.save()
+      const newAccessToken = jwt.sign({ id: decoded.id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
 
       res.status(200).json({
-        message: 'Successfully generated new access and refresh token',
+        message: 'Successfully generated new access token',
         data: {
-          accessToken: token,
-          refreshToken: refreshToken.token
+          accessToken: newAccessToken
         }
       })
     } catch (error) {
@@ -110,7 +129,7 @@ module.exports = {
   },
   authenticate: async (req, res, next) => {
     try {
-      const user = await Users.findOne({ email: req.body.email }, '+password')
+      const user = await Users.findOne({ email: req.body.email }, '+password +authenticated')
       if (!user) throw createError(400, 'Wrong email or password.')
 
       const match = await bcrypt.compare(req.body.password, user.password)
@@ -128,6 +147,9 @@ module.exports = {
 
         await newRefreshToken.save()
       }
+
+      user.authenticated = true
+      await user.save()
 
       res.status(200).json({
         message: 'Successfully authenticated.',
