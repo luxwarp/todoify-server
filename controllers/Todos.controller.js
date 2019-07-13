@@ -4,7 +4,10 @@ const createError = require('http-errors')
 module.exports = {
   getById: async (req, res, next) => {
     try {
-      const todo = await Todos.findOne({ _id: req.params.todoId, userId: req.body.userId }).populate(req.query.populate || '')
+      const todo = await Todos.findOne({
+        _id: req.params.todoId,
+        userId: req.body.userId
+      }).populate(req.query.populate || '')
       if (!todo) throw createError(404, 'Could not find to-do.')
 
       res.status(200).json({
@@ -31,7 +34,10 @@ module.exports = {
   },
   updateById: async (req, res, next) => {
     try {
-      const todo = await Todos.findOne({ _id: req.params.todoId, userId: req.body.userId })
+      const todo = await Todos.findOne({
+        _id: req.params.todoId,
+        userId: req.body.userId
+      })
       if (!todo) throw createError(404, 'Could not find to-do to update.')
 
       todo.title = req.body.title ? req.body.title : todo.title
@@ -51,7 +57,10 @@ module.exports = {
   },
   deleteById: async (req, res, next) => {
     try {
-      const deleted = await Todos.findOneAndDelete({ _id: req.params.todoId, userId: req.body.userId })
+      const deleted = await Todos.findOneAndDelete({
+        _id: req.params.todoId,
+        userId: req.body.userId
+      })
       if (!deleted) throw createError(404, 'No to-do found to delete.')
 
       res.status(204).json({
@@ -64,6 +73,7 @@ module.exports = {
   create: async (req, res, next) => {
     try {
       const todo = new Todos({
+        _id: req.body._id,
         title: req.body.title,
         userId: req.body.userId,
         category: req.body.category

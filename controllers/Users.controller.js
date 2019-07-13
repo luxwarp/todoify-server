@@ -9,12 +9,19 @@ const createError = require('http-errors')
 module.exports = {
   logout: async (req, res, next) => {
     try {
-      const refreshTokens = await RefreshTokens.find({ userId: req.body.userId })
-      if (!refreshTokens.length) throw createError(401, 'No refresh tokens found.')
+      const refreshTokens = await RefreshTokens.find({
+        userId: req.body.userId
+      })
+      if (!refreshTokens.length) {
+        throw createError(401, 'No refresh tokens found.')
+      }
 
       if (refreshTokens.length === 1) {
         await refreshTokens[0].delete()
-        const user = await Users.findOne({ _id: req.body.userId }, '+authenticated')
+        const user = await Users.findOne(
+          { _id: req.body.userId },
+          '+authenticated'
+        )
         user.authenticated = false
         await user.save()
         res.status(200).json({
@@ -22,7 +29,9 @@ module.exports = {
         })
       } else {
         if (req.body.refreshToken) {
-          const refreshToken = refreshTokens.find(refreshToken => refreshToken.token === req.body.refreshToken)
+          const refreshToken = refreshTokens.find(
+            refreshToken => refreshToken.token === req.body.refreshToken
+          )
           if (!refreshToken) throw createError(401, 'Invalid refresh token.')
           await refreshToken.delete()
           res.status(200).json({
@@ -30,11 +39,15 @@ module.exports = {
           })
         } else {
           await refreshTokens.forEach(refreshToken => refreshToken.delete())
-          const user = await Users.findOne({ _id: req.body.userId }, '+authenticated')
+          const user = await Users.findOne(
+            { _id: req.body.userId },
+            '+authenticated'
+          )
           user.authenticated = false
           await user.save()
           res.status(200).json({
-            message: 'Refresh tokens disabled. User needs to authenticate go gain access again.'
+            message:
+              'Refresh tokens disabled. User needs to authenticate go gain access again.'
           })
         }
       }
@@ -44,15 +57,30 @@ module.exports = {
   },
   refreshToken: async (req, res, next) => {
     try {
-      const refreshToken = await RefreshTokens.findOne({ token: req.body.refreshToken })
+      const refreshToken = await RefreshTokens.findOne({
+        token: req.body.refreshToken
+      })
       if (!refreshToken) throw createError(401, 'Invalid refresh token.')
 
-      const decoded = await jwt.verify(refreshToken.token, req.app.get('secretKey'), (error, decoded) => {
-        if (error) throw createError(401, 'Could not verify refresh token. Please authenticate to generate new access and refresh token.')
-        return decoded
-      })
+      const decoded = await jwt.verify(
+        refreshToken.token,
+        req.app.get('secretKey'),
+        (error, decoded) => {
+          if (error) {
+            throw createError(
+              401,
+              'Could not verify refresh token. Please authenticate to generate new access and refresh token.'
+            )
+          }
+          return decoded
+        }
+      )
 
-      const newAccessToken = jwt.sign({ id: decoded.id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
+      const newAccessToken = jwt.sign(
+        { id: decoded.id },
+        req.app.get('secretKey'),
+        { expiresIn: req.app.get('tokenExpiresIn') }
+      )
 
       res.status(200).json({
         message: 'Successfully generated new access token',
@@ -109,11 +137,18 @@ module.exports = {
 
       user.name = req.body.name ? req.body.name : user.name
       user.email = req.body.email ? req.body.email : user.email
-      user.password = req.body.newPassword ? req.body.newPassword : user.password
+      user.password = req.body.newPassword
+        ? req.body.newPassword
+        : user.password
 
       if (user.isModified('email')) {
-        const emailExist = await Users.findOne({ email: req.body.email }, 'email _id')
-        if (emailExist && emailExist._id !== req.body.userId) throw createError(409, 'Email is already registered.')
+        const emailExist = await Users.findOne(
+          { email: req.body.email },
+          'email _id'
+        )
+        if (emailExist && emailExist._id !== req.body.userId) {
+          throw createError(409, 'Email is already registered.')
+        }
       }
 
       let newUserInfo = await user.save()
@@ -129,16 +164,23 @@ module.exports = {
   },
   authenticate: async (req, res, next) => {
     try {
-      const user = await Users.findOne({ email: req.body.email }, '+password +authenticated')
+      const user = await Users.findOne(
+        { email: req.body.email },
+        '+password +authenticated'
+      )
       if (!user) throw createError(400, 'Wrong email or password.')
 
       const match = await bcrypt.compare(req.body.password, user.password)
       if (!match) throw createError(400, 'Wrong email or password.')
 
-      const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: req.app.get('tokenExpiresIn') })
+      const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), {
+        expiresIn: req.app.get('tokenExpiresIn')
+      })
       let refreshToken = null
       if (req.body.refreshToken) {
-        refreshToken = jwt.sign({ id: user._id }, req.app.get('secretKey'), { expiresIn: '7d' })
+        refreshToken = jwt.sign({ id: user._id }, req.app.get('secretKey'), {
+          expiresIn: '7d'
+        })
 
         const newRefreshToken = new RefreshTokens({
           token: refreshToken,
@@ -164,10 +206,14 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
-      const emailExist = await Users.findOne({ email: req.body.email }, 'email')
+      const emailExist = await Users.findOne(
+        { email: req.body.email },
+        'email'
+      )
       if (emailExist) throw createError(409, 'Email is already registered.')
 
       const user = new Users({
+        _id: req.body._id,
         email: req.body.email,
         password: req.body.password,
         name: req.body.name
