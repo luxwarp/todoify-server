@@ -32,7 +32,10 @@ app.use(bodyParser.json());
 app.use("/", routes);
 
 // error handle
-app.use((error, req, res) => {
+app.use((error, req, res, next) => {
+  if (!req) {
+    return next(error);
+  }
   res.status(error.status || 500).json({
     errors: {
       status: error.status || 500,
@@ -40,9 +43,6 @@ app.use((error, req, res) => {
       message: error.message || "Internal server error"
     }
   });
-  if (!req) {
-    console.error(error.message);
-  }
 });
 
 // start express, print out app title, startup message and listen on the port set in .env file
