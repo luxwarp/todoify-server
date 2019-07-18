@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const RefreshTokenSchema = new mongoose.Schema(
   {
@@ -16,10 +16,11 @@ const RefreshTokenSchema = new mongoose.Schema(
   {
     timestamps: true
   }
-)
+);
 
-RefreshTokenSchema.pre('save', function (next) {
-  this.increment()
-})
+RefreshTokenSchema.pre("save", function(next) {
+  this.increment();
+  next();
+});
 
-module.exports = mongoose.model('RefreshToken', RefreshTokenSchema)
+module.exports = mongoose.model("RefreshToken", RefreshTokenSchema);

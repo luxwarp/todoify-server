@@ -1,16 +1,16 @@
-const routes = require('express').Router()
-const Users = require('../controllers/Users.controller')
-const validateUser = require('../middlewares/userValidation')
+const routes = require("express").Router();
+const Users = require("../controllers/Users.controller");
+const validateUser = require("../middlewares/userValidation");
 
 // public routes
-routes.post('/register', Users.create)
-routes.post('/authenticate', Users.authenticate)
-routes.post('/refreshToken', Users.refreshToken)
+routes.post("/register", Users.create);
+routes.post("/authenticate", Users.authenticate);
+routes.post("/refreshToken", Users.refreshToken);
 
 // protected routes
-routes.get('/', validateUser, Users.getUser)
-routes.patch('/', validateUser, Users.update)
-routes.delete('/', validateUser, Users.delete)
-routes.post('/logout', validateUser, Users.logout)
+routes.get("/", validateUser, Users.getUser);
+routes.patch("/", validateUser, Users.update);
+routes.delete("/", validateUser, Users.delete);
+routes.post("/logout", validateUser, Users.logout);
 
-module.exports = routes
+module.exports = routes;

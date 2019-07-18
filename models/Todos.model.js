@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const todosSchema = new mongoose.Schema(
   {
@@ -16,24 +16,24 @@ const todosSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: false,
       trim: true,
-      ref: 'Category',
+      ref: "Category",
       default: null
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       trim: true,
-      ref: 'User'
+      ref: "User"
     }
   },
   {
     timestamps: true
   }
-)
+);
 
-todosSchema.pre('save', function (next) {
-  this.increment()
-  return next()
-})
+todosSchema.pre("save", function(next) {
+  this.increment();
+  return next();
+});
 
-module.exports = mongoose.model('Todo', todosSchema)
+module.exports = mongoose.model("Todo", todosSchema);

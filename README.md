@@ -1,7 +1,5 @@
 # Todoify Server
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
 ## Intro
 
 Todoify Server, a simple to-do with categories, REST API built with NodeJS, [Express](https://github.com/expressjs/express/), [JWT](https://github.com/auth0/node-jsonwebtoken), and [Mongoose](https://github.com/Automattic/mongoose).
@@ -12,27 +10,28 @@ If you want to use our public API to build your own front-end
 
 Stay tuned for updates in a near future! :D
 
-**Features** 
-* User
-  * Registration
-  * Authentication (login)
-  * Get user info
-  * Update user
-  * Delete user
-  * Logout (disable all refresh tokens.)
-  * Refresh Token
-* Categories
-  * Create new
-  * Get all
-  * Get one by id
-  * Update by id
-  * Delete by id
-* To-do's
-  * Create new
-  * Get all
-  * Get one by id
-  * Update by id
-  * Delete by id
+**Features**
+
+- User
+  - Registration
+  - Authentication (login)
+  - Get user info
+  - Update user
+  - Delete user
+  - Logout (disable all refresh tokens.)
+  - Refresh Token
+- Categories
+  - Create new
+  - Get all
+  - Get one by id
+  - Update by id
+  - Delete by id
+- To-do's
+  - Create new
+  - Get all
+  - Get one by id
+  - Update by id
+  - Delete by id
 
 Check [wiki](https://github.com/luxwarp/todoify-server/wiki) for change log and more information.
 
@@ -40,9 +39,9 @@ We also have have a separate [Todoify client](https://github.com/luxwarp/todoify
 
 ## Requirements
 
-* [NodeJS](https://nodejs.org/en/)
-* [MongoDB](https://www.mongodb.com/)
-* [PM2](http://pm2.keymetrics.io/)
+- [NodeJS](https://nodejs.org/en/)
+- [MongoDB](https://www.mongodb.com/)
+- [PM2](http://pm2.keymetrics.io/)
 
 **Make sure you have PM2 installed globally**
 
@@ -58,7 +57,7 @@ Start off by downloading Todoify Server
 git clone https://github.com/luxwarp/todoify-server.git
 ```
 
-cd in to your todoify-server folder and copy .env.example to .env 
+cd in to your todoify-server folder and copy .env.example to .env
 
 ```
 cp .env.example .env
@@ -67,7 +66,7 @@ cp .env.example .env
 edit your new .env file and change all information to match your own settings
 
 ```
-nano .env 
+nano .env
 ```
 
 save .env file and then install dependencies
@@ -102,7 +101,7 @@ If you don't want to start Todoify server with PM2 you can run
 npm run single-start
 ```
 
-or just 
+or just
 
 ```
 node ./index.js

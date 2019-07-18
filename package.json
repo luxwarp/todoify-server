@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "pm2-dev start pm2.config.js",
     "production": "pm2 start pm2.config.js --env production",
-    "single-start": "node index.js"
+    "single-start": "node index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "author": {
     "name": "Mikael Luxwarp Carlsson",
@@ -47,11 +49,9 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-node": "^9.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2"
   }
 }

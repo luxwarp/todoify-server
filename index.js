@@ -1,57 +1,56 @@
 // import modules
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const morgan = require('morgan')
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const morgan = require("morgan");
 
 // initialize express
-const app = express()
+const app = express();
 
 // import custom project files
-const config = require('./config/config') // config is the .env variables converted to easier variables.
-const mongo = require('./database/mongo') // the mongoose connection to MongoDB
-const routes = require('./routes/index.routes') // the routes for the API.
+const config = require("./config/config"); // config is the .env variables converted to easier variables.
+const mongo = require("./database/mongo"); // the mongoose connection to MongoDB
+const routes = require("./routes/index.routes"); // the routes for the API.
 
 // sets some variables to use app wide.
-app.set('secretKey', config.SECRET_KEY)
-app.set('tokenExpiresIn', config.TOKEN_EXPIRESIN)
-app.set('apiDocumentationLink', config.API_DOCUMENTATION_LINK)
+app.set("secretKey", config.SECRET_KEY);
+app.set("tokenExpiresIn", config.TOKEN_EXPIRESIN);
+app.set("apiDocumentationLink", config.API_DOCUMENTATION_LINK);
 
 // disable the x-powered-by header.
-app.disable('x-powered-by')
+app.disable("x-powered-by");
 
 // middlewares
 // enable morgan request logger.
-app.use(morgan(config.MORGAN_LEVEL))
+app.use(morgan(config.MORGAN_LEVEL));
 // enable cross-origin so anyone can use the api.
-app.use(cors())
+app.use(cors());
 // parse incoming requests body
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 // send all request to routes handler.
-app.use('/', routes)
+app.use("/", routes);
 
 // error handle
-app.use((error, req, res, next) => {
-
+app.use((error, req, res) => {
   res.status(error.status || 500).json({
     errors: {
       status: error.status || 500,
-      name: error.name || 'Unknown error',
-      message: error.message || 'Internal server error'
+      name: error.name || "Unknown error",
+      message: error.message || "Internal server error"
     }
-  })
+  });
   if (!req) {
-    console.error(error.message)
+    console.error(error.message);
   }
-})
+});
 
 // start express, print out app title, startup message and listen on the port set in .env file
 app.listen(config.PORT, () => {
-  console.log(config.APP_NAME)
-  console.log(config.STARTUP_MESSAGE)
-  console.log(`${config.APP_NAME} is running on port: ${config.PORT}`)
-  console.log(`Running in ${process.env.NODE_ENV} mode.`)
+  console.log(config.APP_NAME);
+  console.log(config.STARTUP_MESSAGE);
+  console.log(`${config.APP_NAME} is running on port: ${config.PORT}`);
+  console.log(`Running in ${process.env.NODE_ENV} mode.`);
   // Initialize database connection.
-  mongo()
-})
+  mongo();
+});

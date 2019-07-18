@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema(
   {
@@ -11,17 +11,17 @@ const categorySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       trim: true,
-      ref: 'User'
+      ref: "User"
     }
   },
   {
     timestamps: true
   }
-)
+);
 
-categorySchema.pre('save', function (next) {
-  this.increment()
-  return next()
-})
+categorySchema.pre("save", function(next) {
+  this.increment();
+  return next();
+});
 
-module.exports = mongoose.model('Category', categorySchema)
+module.exports = mongoose.model("Category", categorySchema);
