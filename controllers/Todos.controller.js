@@ -40,9 +40,11 @@ module.exports = {
       });
       if (!todo) throw createError(404, "Could not find to-do to update.");
 
-      todo.title = req.body.title ? req.body.title : todo.title;
-      todo.done = req.body.done ? req.body.done : todo.done;
-      todo.category = req.body.category ? req.body.category : todo.category;
+      if ("title" in req.body) todo.title = req.body.title;
+      if ("done" in req.body) todo.done = req.body.done;
+      if ("category" in req.body) {
+        todo.category = req.body.category;
+      }
 
       const newTodo = await todo.save();
       await newTodo.populate(req.query.populate || "").execPopulate();

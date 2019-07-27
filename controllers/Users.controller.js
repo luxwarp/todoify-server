@@ -135,11 +135,11 @@ module.exports = {
       const match = await bcrypt.compare(req.body.password, user.password);
       if (!match) throw createError(403, "Wrong user password.");
 
-      user.name = req.body.name ? req.body.name : user.name;
-      user.email = req.body.email ? req.body.email : user.email;
-      user.password = req.body.newPassword
-        ? req.body.newPassword
-        : user.password;
+      if ("name" in req.body) user.name = req.body.name;
+      if ("email" in req.body) user.email = req.body.email;
+      if ("newPassword" in req.body) {
+        user.password = req.body.newPassword;
+      }
 
       if (user.isModified("email")) {
         const emailExist = await Users.findOne(

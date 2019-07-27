@@ -42,7 +42,7 @@ module.exports = {
         throw createError(404, "Could not find category to update.");
       }
 
-      category.title = req.body.title ? req.body.title : category.title;
+      if ("title" in req.body) category.title = req.body.title;
 
       const newCategory = await category.save();
 
