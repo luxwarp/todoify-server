@@ -20,8 +20,11 @@ module.exports = async (req, res, next) => {
         );
       req.body.userId = decoded.id;
     });
-    const user = await Users.findById(req.body.userId, "+authenticated");
-    if (user.authenticated) {
+    const user = await Users.findById(
+      req.body.userId,
+      "+authenticated +activated"
+    );
+    if (user.authenticated && user.activated) {
       return next();
     } else {
       throw createError(401, "Not authorized.");

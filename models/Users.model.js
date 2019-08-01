@@ -24,6 +24,11 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
       select: false
+    },
+    activated: {
+      type: Boolean,
+      default: false,
+      select: false
     }
   },
   {

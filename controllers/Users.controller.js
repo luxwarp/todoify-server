@@ -5,6 +5,7 @@ const RefreshTokens = require("../models/RefreshToken.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
+const smtp = require("../mail/mail");
 
 module.exports = {
   logout: async (req, res, next) => {
@@ -166,9 +167,14 @@ module.exports = {
     try {
       const user = await Users.findOne(
         { email: req.body.email },
-        "+password +authenticated"
+        "+password +authenticated +activated"
       );
       if (!user) throw createError(400, "Wrong email or password.");
+      if (!user.activated)
+        throw createError(
+          400,
+          "User not activated. Check email for activation link."
+        );
 
       const match = await bcrypt.compare(req.body.password, user.password);
       if (!match) throw createError(400, "Wrong email or password.");
@@ -204,6 +210,30 @@ module.exports = {
       return next(error);
     }
   },
+  activate: async (req, res) => {
+    try {
+      await jwt.verify(
+        req.query.token,
+        req.app.get("secretKey"),
+        (error, decoded) => {
+          if (error) throw createError(401, "Not a valid token.");
+          req.body.userId = decoded.id;
+        }
+      );
+
+      const user = await Users.findById(req.body.userId, "+activated");
+      if (!user) throw createError(404, "User not found.");
+      if (user.activated) throw createError(404, "User already activated.");
+
+      user.activated = true;
+
+      await user.save();
+
+      res.send(`${user.email} is activated.`);
+    } catch (error) {
+      return res.send(error.message);
+    }
+  },
   create: async (req, res, next) => {
     try {
       const emailExist = await Users.findOne(
@@ -221,8 +251,31 @@ module.exports = {
 
       await user.save();
 
+      const activateToken = jwt.sign(
+        { id: user._id },
+        req.app.get("secretKey"),
+        {
+          expiresIn: req.app.get("tokenExpiresIn")
+        }
+      );
+
+      smtp.sendMail({
+        from: "Todoify <todoify@luxwarp.info>",
+        to: `${user.email}`,
+        subject: "Activate account.",
+        html: `<h1>Hello ${user.email}.</h2> 
+        <p>Please activate your account here.
+        <a href="${req.protocol}://${req.get(
+          "host"
+        )}/users/activate?token=${activateToken}">
+        Activate
+        </a>
+        </p>`
+      });
+
       res.status(201).json({
-        message: "User account is created."
+        message:
+          "User account is created. Check your email to activate your account."
       });
     } catch (error) {
       return next(error);
