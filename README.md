@@ -1,9 +1,13 @@
-# Todoify Server
+# <img src="graphics/android-chrome-192x192.png" width="35" style="margin-right: 15px;" alt="todoify icon">Todoify Server
 
 ## Intro
 
 Todoify Server, a simple to-do with categories, REST API built with NodeJS, [Express](https://github.com/expressjs/express/), [JWT](https://github.com/auth0/node-jsonwebtoken), and [Mongoose](https://github.com/Automattic/mongoose).
 Authenticated users can only get and manipulate categories and to-do's that matches the authenticated user.
+
+<a href="./graphics/todoify-server-big-image-1920x1080.png">
+  <img src="./graphics/todoify-server-big-image-1920x1080.png" width="700">
+</a>
 
 If you want to use our public API to build your own front-end
 [Check our API documentation on postman for endpoint descriptions.](https://documenter.getpostman.com/view/1602420/S1Zz6UxQ)
@@ -14,12 +18,14 @@ Stay tuned for updates in a near future! :D
 
 - User
   - Registration
+  - Account activation
   - Authentication (login)
   - Get user info
   - Update user
   - Delete user
   - Logout (disable all refresh tokens.)
   - Refresh Token
+  - Reset password
 - Categories
   - Create new
   - Get all
@@ -42,6 +48,7 @@ We also have have a separate [Todoify client](https://github.com/luxwarp/todoify
 - [NodeJS](https://nodejs.org/en/)
 - [MongoDB](https://www.mongodb.com/)
 - [PM2](http://pm2.keymetrics.io/)
+- SMTP server for sending mail.
 
 **Make sure you have PM2 installed globally**
 

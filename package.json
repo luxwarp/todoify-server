@@ -1,6 +1,6 @@
 {
   "name": "todoify-server",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "private": true,
   "description": "Todoify Server, a simple to-do with categories, REST API built with NodeJS, Express, Mongoose and JWT.",
   "main": "index.js",
@@ -35,7 +35,9 @@
     "mongodb",
     "mongoose",
     "jwt",
-    "authentication"
+    "authentication",
+    "smtp",
+    "nodemailer"
   ],
   "dependencies": {
     "bcrypt": "^3.0.6",
@@ -45,12 +47,12 @@
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.6.5",
+    "mongoose": "^5.6.7",
     "morgan": "^1.9.1",
     "nodemailer": "^6.3.0"
   },
   "devDependencies": {
-    "eslint": "^6.0.1",
+    "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "prettier": "^1.18.2"
