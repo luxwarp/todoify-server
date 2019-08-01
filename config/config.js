@@ -18,7 +18,12 @@ if (envFile.error) {
     MONGODB_URI:
       process.env.MONGODB_URI ||
       "mongodb://username:password@localhost:27017/todoify",
-    DB_RECONNECT_SECONDS: process.env.DB_RECONNECT_SECONDS || 5
+    DB_RECONNECT_SECONDS: process.env.DB_RECONNECT_SECONDS || 5,
+    SMTP_HOST: process.env.SMTP_HOST || "localhost",
+    SMTP_PORT: process.env.SMTP_PORT || 587,
+    SMTP_USERNAME: process.env.SMTP_USERNAME || "username",
+    SMTP_PASSWORD: process.env.SMTP_PASSWORD || "password",
+    SMTP_DEFAULT_FROM: process.env.SMTP_DEFAULT_FROM || "no-reply@localhost"
   };
 
   module.exports = config;

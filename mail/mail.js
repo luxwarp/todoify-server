@@ -1,12 +1,13 @@
 const nodemailer = require("nodemailer");
+const config = require("../config/config");
 
 const smtpTransport = nodemailer.createTransport({
-  host: "world.luxwarp.info",
-  port: 587,
+  host: config.SMTP_HOST,
+  port: config.SMTP_PORT,
   secure: false, // upgrade later with STARTTLS
   auth: {
-    user: "luxwarp",
-    pass: "Tjafsa90!"
+    user: config.SMTP_USERNAME,
+    pass: config.SMTP_PASSWORD
   }
 });
 

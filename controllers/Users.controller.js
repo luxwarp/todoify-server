@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
 const smtp = require("../mail/mail");
+const config = require("../config/config");
 
 module.exports = {
   logout: async (req, res, next) => {
@@ -210,6 +211,35 @@ module.exports = {
       return next(error);
     }
   },
+  resetPassword: async (req, res, next) => {
+    try {
+      const user = await Users.findOne({ email: req.body.email }, "+password");
+      if (!user) throw createError(404, "No account found.");
+
+      const randomPassword =
+        Math.floor(Math.random() * (99999 - 11111)) + 11111;
+
+      user.password = randomPassword;
+
+      await user.save();
+
+      smtp.sendMail({
+        from: config.SMTP_DEFAULT_FROM,
+        to: `${user.email}`,
+        subject: "Password reset",
+        html: `<h1>Hello ${user.email}.</h2> 
+        <p>You have requested a new password.</p>
+        
+        <p>This is your new password: ${randomPassword}</p>`
+      });
+
+      res.status(201).json({
+        message: "A new password has been generated and sent to your email."
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
   activate: async (req, res) => {
     try {
       await jwt.verify(
@@ -260,7 +290,7 @@ module.exports = {
       );
 
       smtp.sendMail({
-        from: "Todoify <todoify@luxwarp.info>",
+        from: config.SMTP_DEFAULT_FROM,
         to: `${user.email}`,
         subject: "Activate account.",
         html: `<h1>Hello ${user.email}.</h2> 
