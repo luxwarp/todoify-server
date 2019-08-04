@@ -174,7 +174,7 @@ module.exports = {
       if (!user.activated)
         throw createError(
           400,
-          "User not activated. Check email for activation link."
+          "User account not activated. Check email for activation code."
         );
 
       const match = await bcrypt.compare(req.body.password, user.password);
