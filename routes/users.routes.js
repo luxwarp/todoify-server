@@ -5,6 +5,7 @@ const validateUser = require("../middlewares/userValidation");
 // public routes
 routes.post("/register", Users.create);
 routes.post("/activate", Users.activate);
+routes.post("/resendactivationcode", Users.resendActivationCode);
 routes.post("/resetpassword", Users.resetPassword);
 routes.post("/authenticate", Users.authenticate);
 routes.post("/refreshToken", Users.refreshToken);
