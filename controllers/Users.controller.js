@@ -240,10 +240,10 @@ module.exports = {
       return next(error);
     }
   },
-  activate: async (req, res) => {
+  activate: async (req, res, next) => {
     try {
       await jwt.verify(
-        req.query.token,
+        req.body.activationCode,
         req.app.get("secretKey"),
         (error, decoded) => {
           if (error) throw createError(401, "Not a valid token.");
@@ -259,9 +259,9 @@ module.exports = {
 
       await user.save();
 
-      res.send(`${user.email} is activated.`);
+      res.status(200).json({ message: `${user.email} is activated.` });
     } catch (error) {
-      return res.send(error.message);
+      return next(error.message);
     }
   },
   create: async (req, res, next) => {
@@ -294,18 +294,13 @@ module.exports = {
         to: `${user.email}`,
         subject: "Activate account.",
         html: `<h1>Hello ${user.email}.</h2> 
-        <p>Please activate your account here.
-        <a href="${req.protocol}://${req.get(
-          "host"
-        )}/users/activate?token=${activateToken}">
-        Activate
-        </a>
-        </p>`
+        <p>This is your activation code.</p>
+        <p>${activateToken}</p>`
       });
 
       res.status(201).json({
         message:
-          "User account is created. Check your email to activate your account."
+          "User account is created. Check your email to get activation code."
       });
     } catch (error) {
       return next(error);
