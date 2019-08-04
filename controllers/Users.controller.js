@@ -261,7 +261,38 @@ module.exports = {
 
       res.status(200).json({ message: `${user.email} is activated.` });
     } catch (error) {
-      return next(error.message);
+      return next(error);
+    }
+  },
+  resendActivationCode: async (req, res, next) => {
+    try {
+      const user = await Users.findOne({ email: req.body.email }, "+activated");
+      if (!user) throw createError(404, "User not found.");
+      if (user.activated)
+        throw createError(400, "User account is already activated.");
+
+      const activateToken = jwt.sign(
+        { id: user._id },
+        req.app.get("secretKey"),
+        {
+          expiresIn: req.app.get("tokenExpiresIn")
+        }
+      );
+
+      smtp.sendMail({
+        from: config.SMTP_DEFAULT_FROM,
+        to: `${user.email}`,
+        subject: "Activate account.",
+        html: `<h1>Hello ${user.email}.</h2> 
+        <p>This is your activation code.</p>
+        <p>${activateToken}</p>`
+      });
+
+      res.status(200).json({
+        message: "A new activation code has been sent to your email address."
+      });
+    } catch (error) {
+      return next(error);
     }
   },
   create: async (req, res, next) => {
