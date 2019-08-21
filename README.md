@@ -41,7 +41,7 @@ Stay tuned for updates in a near future! :D
 
 Check [wiki](https://github.com/luxwarp/todoify-server/wiki) for change log and more information.
 
-We also have have a separate [Todoify client](https://github.com/luxwarp/todoify-client) built with VueJS. It's also open source and interacts with Todoify server. Try out Todoify Client live at [todoify.luxwarp.info](https://todoify.luxwarp.info)
+We also have have a separate [Todoify client](https://github.com/luxwarp/todoify-client) built with VueJS. It's also open source and interacts with Todoify server. Try out Todoify Client live at [todoify.codeiolo.org](https://todoify.codeiolo.org)
 
 ## Requirements
 
