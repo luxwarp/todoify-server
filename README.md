@@ -60,43 +60,43 @@ npm install pm2 -g
 
 Start off by downloading Todoify Server
 
-```
+```shell
 git clone https://github.com/luxwarp/todoify-server.git
 ```
 
 cd in to your todoify-server folder and copy .env.example to .env
 
-```
+```shell
 cp .env.example .env
 ```
 
 edit your new .env file and change all information to match your own settings
 
-```
+```shell
 nano .env
 ```
 
 save .env file and then install dependencies
 
-```
+```shell
 npm install
 ```
 
 **Make sure you have PM2 installed globally**
 
-```
+```shell
 npm install pm2 -g
 ```
 
 To start Todoify server in development mode
 
-```
+```shell
 npm run dev
 ```
 
 To start Todoify server in production mode
 
-```
+```shell
 npm run production
 ```
 
@@ -104,13 +104,13 @@ You should now see in your console that Todoify server is running. Todoify serve
 
 If you don't want to start Todoify server with PM2 you can run
 
-```
+```shell
 npm run single-start
 ```
 
 or just
 
-```
+```shell
 node ./index.js
 ```
 
