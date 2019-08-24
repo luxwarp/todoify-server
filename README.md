@@ -52,7 +52,7 @@ We also have have a separate [Todoify client](https://github.com/luxwarp/todoify
 
 **Make sure you have PM2 installed globally**
 
-```
+```shell
 npm install pm2 -g
 ```
 
