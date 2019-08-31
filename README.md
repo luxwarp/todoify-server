@@ -120,7 +120,7 @@ By default Todoify server does not use HTTPS, the easiest way to get your connec
 
 ## License
 
-ISC [Mikael Luxwarp Carlsson](https://codeiolo.org/members/luxwarp)
+ISC [Mikael Luxwarp Carlsson](https://codeiolo.org)
 
 ## Note
 
