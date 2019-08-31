@@ -43,17 +43,17 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "dotenv": "^8.0.0",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.6.7",
+    "mongoose": "^5.6.11",
     "morgan": "^1.9.1",
     "nodemailer": "^6.3.0"
   },
   "devDependencies": {
-    "eslint": "^6.1.0",
-    "eslint-config-prettier": "^6.0.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
     "prettier": "^1.18.2"
   }
