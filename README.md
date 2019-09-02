@@ -1,12 +1,12 @@
-# <img src="https://git.codeiolo.org/codeiolo/todoify-server/raw/d5f5e4b12781c383f8c419e77ed6b58ad940063c/graphics/android-chrome-192x192.png" width="35" style="margin-right: 15px;" alt="todoify icon">Todoify Server
+# <img src="https://cloud.codeiolo.org/s/ZK9G8HatXKb69Zx/preview" width="35" style="margin-right: 15px;" alt="todoify icon">Todoify Server
 
 ## Intro
 
 Todoify Server, a simple to-do with categories, REST API built with NodeJS, [Express](https://github.com/expressjs/express/), [JWT](https://github.com/auth0/node-jsonwebtoken), and [Mongoose](https://github.com/Automattic/mongoose).
 Authenticated users can only get and manipulate categories and to-do's that matches the authenticated user.
 
-<a href="https://git.codeiolo.org/codeiolo/todoify-server/raw/d5f5e4b12781c383f8c419e77ed6b58ad940063c/graphics/todoify-server-big-image-1920x1080.png">
-  <img src="https://git.codeiolo.org/codeiolo/todoify-server/raw/d5f5e4b12781c383f8c419e77ed6b58ad940063c/graphics/todoify-server-big-image-1920x1080.png" width="700">
+<a href="https://cloud.codeiolo.org/s/GMoQXwTYSHDLQgz/preview">
+  <img src="https://cloud.codeiolo.org/s/GMoQXwTYSHDLQgz/preview" width="700">
 </a>
 
 If you want to use our public API to build your own front-end
